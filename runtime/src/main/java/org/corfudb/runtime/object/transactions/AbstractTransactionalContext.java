@@ -57,6 +57,9 @@ import org.corfudb.util.Utils;
 @Slf4j
 public abstract class AbstractTransactionalContext implements
         Comparable<AbstractTransactionalContext> {
+    @Getter
+    @Setter
+    byte[] txMetadata;
 
     /**
      * Constant for the address of an uncommitted log entry.

@@ -4,6 +4,8 @@ import com.google.common.annotations.VisibleForTesting;
 import io.micrometer.core.instrument.Timer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.corfudb.common.metrics.micrometer.MicroMeterUtils;
@@ -40,6 +42,9 @@ public class MultiObjectSMREntry extends LogEntry implements ISMRConsumable {
     // map from stream-ID to a list of updates encapsulated as MultiSMREntry
     private Map<UUID, MultiSMREntry> streamUpdates = new ConcurrentHashMap<>();
 
+    @Getter
+    @Setter
+    public byte[] txMetadata = null;
     /**
      * A container to store streams and their payloads (i.e. serialized SMR updates).
      * This is required to support lazy stream deserialization.

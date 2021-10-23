@@ -109,6 +109,7 @@ public class ServerHandshakeHandler extends ChannelDuplexHandler {
         // which indicates node id matching is not required.
         if (serverId.equals(DEFAULT_UUID)) {
             log.info("channelRead: node id matching is not requested by client.");
+            log.info("request payloadcase is " + ((RequestMsg) m).getPayload().getPayloadCase());
         } else if (!serverId.equals(this.nodeId)) {
             log.error("channelRead: Invalid handshake: this is {} and client is trying to connect to {}",
                     this.nodeId, serverId);

@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.corfudb.common.compression.Codec;
 import org.corfudb.common.metrics.micrometer.MicroMeterUtils;
@@ -13,6 +14,7 @@ import org.corfudb.protocols.logprotocol.CheckpointEntry;
 import org.corfudb.protocols.logprotocol.LogEntry;
 import org.corfudb.runtime.CorfuRuntime;
 import org.corfudb.runtime.exceptions.WriteSizeException;
+import org.corfudb.runtime.object.transactions.TransactionalContext;
 import org.corfudb.runtime.view.Address;
 import org.corfudb.util.serializer.Serializers;
 
@@ -34,6 +36,10 @@ public class LogData implements IMetadata, ILogData {
 
     @Getter
     byte[] data;
+
+    @Getter
+    @Setter
+    byte[] txMetadata;
 
     private SerializedCache serializedCache = null;
 
@@ -203,8 +209,10 @@ public class LogData implements IMetadata, ILogData {
         type = CorfuProtocolCommon.fromBuffer(buf, DataType.class);
         if (type == DataType.DATA) {
             data = CorfuProtocolCommon.fromBuffer(buf, byte[].class);
+            txMetadata = null;
         } else {
             data = null;
+            txMetadata = null;
         }
 
         metadataMap = CorfuProtocolCommon.enumMapFromBuffer(buf, IMetadata.LogUnitMetadataType.class);
@@ -217,6 +225,7 @@ public class LogData implements IMetadata, ILogData {
      */
     public LogData(DataType type) {
         this.type = type;
+        this.txMetadata = null;
         this.data = null;
         this.metadataMap = new EnumMap<>(IMetadata.LogUnitMetadataType.class);
     }
@@ -238,6 +247,36 @@ public class LogData implements IMetadata, ILogData {
             this.metadataMap = new EnumMap<>(IMetadata.LogUnitMetadataType.class);
         } else {
             this.type = type;
+            this.txMetadata = null;
+            this.data = null;
+            this.payload.set(object);
+            this.metadataMap = new EnumMap<>(IMetadata.LogUnitMetadataType.class);
+            if (object instanceof CheckpointEntry) {
+                CheckpointEntry cp = (CheckpointEntry) object;
+                setCheckpointType(cp.getCpType());
+                setCheckpointId(cp.getCheckpointId());
+                setCheckpointedStreamId(cp.getStreamId());
+                setCheckpointedStreamStartLogAddress(
+                        Long.parseLong(cp.getDict()
+                                .get(CheckpointEntry.CheckpointDictKey.START_LOG_ADDRESS)));
+            }
+        }
+    }
+
+    /**
+     * Constructor for generating LogData.
+     *
+     * @param type   The type of log data to instantiate.
+     * @param object The actual data/value
+     */
+    public LogData(DataType type, byte[] txMetadata, final Object object) {
+        if (object instanceof ByteBuf) {
+            this.type = type;
+            this.data = byteArrayFromBuf((ByteBuf) object);
+            this.metadataMap = new EnumMap<>(IMetadata.LogUnitMetadataType.class);
+        } else {
+            this.type = type;
+            this.txMetadata = txMetadata;
             this.data = null;
             this.payload.set(object);
             this.metadataMap = new EnumMap<>(IMetadata.LogUnitMetadataType.class);
@@ -264,6 +303,20 @@ public class LogData implements IMetadata, ILogData {
         this(type, object);
         setPayloadCodecType(codecType);
     }
+
+    /**
+     * Constructor for generating LogData.
+     *
+     * @param type      The type of log data to instantiate.
+     * @param object    The actual data/value
+     * @param txMetadata The metadata of fabric transaction execution
+     * @param codecType The encoder/decoder type
+     */
+    public LogData(DataType type, byte[] txMetadata, final Object object, final Codec.Type codecType) {
+        this(type, txMetadata, object);
+        setPayloadCodecType(codecType);
+    }
+
 
     /**
      * Assign a given token to this log data.

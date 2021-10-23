@@ -23,29 +23,30 @@ message DataRank {
 message LogEntry {
     optional DataType data_type = 1;
     optional bytes data = 2;
-    optional int64 global_address = 3;
-    repeated string	streams = 6;
-    map<string, int64> logical_addresses = 7;
-    map<string, int64> backpointers = 8;
-    optional DataRank rank = 9;
-    optional CheckpointEntryType checkpointEntryType = 10;
-    optional int64 checkpointId_most_significant = 11;
-    optional int64 checkpointId_least_significant = 12;
-    optional int64 checkpointedStreamId_most_significant = 13;
-    optional int64 checkpointedStreamId_least_significant = 14;
+    optional bytes tx_metadata = 3;
+    optional int64 global_address = 4;
+    repeated string	streams = 7;
+    map<string, int64> logical_addresses = 8;
+    map<string, int64> backpointers = 9;
+    optional DataRank rank = 10;
+    optional CheckpointEntryType checkpointEntryType = 11;
+    optional int64 checkpointId_most_significant = 12;
+    optional int64 checkpointId_least_significant = 13;
+    optional int64 checkpointedStreamId_most_significant = 14;
+    optional int64 checkpointedStreamId_least_significant = 15;
     //  Tail of the stream at the time of taking the checkpoint snapshot.
-    optional int64 checkpointedStreamStartLogAddress = 15;
+    optional int64 checkpointedStreamStartLogAddress = 16;
 
     // ClientId is the Corfu runtime id that created this LogEntry
-    optional int64 clientId_least_significant = 16;
-    optional int64 clientId_most_significant = 17;
+    optional int64 clientId_least_significant = 17;
+    optional int64 clientId_most_significant = 18;
     // ThreadId is the thread id that created this LogEntry
-    optional int64 threadId = 18;
+    optional int64 threadId = 19;
     // The type of codec that payload was encoded with
     // Protobuf doesnt have a byte, so this should use
     // less than 4-bytes to encode, since the codecType
     // range is positive and fits in a byte
-    optional int32 codecType = 19;
+    optional int32 codecType = 20;
 }
 
 message LogHeader {

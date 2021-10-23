@@ -508,6 +508,12 @@ public class StreamLogFiles implements StreamLog {
 
         logData.setBackpointerMap(getUUIDLongMap(entry.getBackpointersMap()));
         logData.setGlobalAddress(entry.getGlobalAddress());
+        log.info("infra에서의 entryData.array:" + entryData.array());
+        log.info("infra에서의 txmetadata:" + entry.getTxMetadata());
+
+//        System.out.println("infra에서의 txmetadata:" + entry.getTxMetadata());
+//        System.out.println("infra에서의 entryData.array:" + entryData.array());
+//        logData.setTxMetadata(entryData.array().get);
 
         if (entry.hasThreadId()) {
             logData.setThreadId(entry.getThreadId());
