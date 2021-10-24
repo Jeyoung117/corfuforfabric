@@ -14,6 +14,7 @@ import org.corfudb.protocols.logprotocol.MultiObjectSMREntry;
 import org.corfudb.protocols.logprotocol.SMREntry;
 import org.corfudb.protocols.wireprotocol.Token;
 import org.corfudb.protocols.wireprotocol.TokenResponse;
+import org.corfudb.protocols.wireprotocol.TxMetadata;
 import org.corfudb.protocols.wireprotocol.TxResolutionInfo;
 import org.corfudb.runtime.collections.TxnContext;
 import org.corfudb.runtime.exceptions.AbortCause;
@@ -59,7 +60,7 @@ public abstract class AbstractTransactionalContext implements
         Comparable<AbstractTransactionalContext> {
     @Getter
     @Setter
-    byte[] txMetadata;
+    TxMetadata txMetadata;
 
     /**
      * Constant for the address of an uncommitted log entry.

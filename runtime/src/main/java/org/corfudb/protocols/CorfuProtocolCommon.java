@@ -14,12 +14,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.corfudb.common.compression.Codec;
 import org.corfudb.protocols.logprotocol.CheckpointEntry;
-import org.corfudb.protocols.wireprotocol.ITypedEnum;
-import org.corfudb.protocols.wireprotocol.PayloadConstructor;
-import org.corfudb.protocols.wireprotocol.SequencerMetrics;
-import org.corfudb.protocols.wireprotocol.StreamAddressRange;
-import org.corfudb.protocols.wireprotocol.StreamsAddressResponse;
-import org.corfudb.protocols.wireprotocol.Token;
+import org.corfudb.protocols.wireprotocol.*;
 import org.corfudb.runtime.exceptions.SerializerException;
 import org.corfudb.runtime.proto.RpcCommon.LayoutMsg;
 import org.corfudb.runtime.proto.RpcCommon.SequencerMetricsMsg;
@@ -350,6 +345,13 @@ public final class CorfuProtocolCommon {
                         x.readBytes(byteArray, 0, length);
                         String str = new String(byteArray, StandardCharsets.UTF_8);
                         return JsonUtils.parser.fromJson(str, Layout.class);
+                    })
+                    .put(TxMetadata.class, x -> {
+                        int length = x.readInt();
+                        byte[] byteArray = new byte[length];
+                        x.readBytes(byteArray, 0, length);
+                        String str = new String(byteArray, StandardCharsets.UTF_8);
+                        return JsonUtils.parser.fromJson(str, TxMetadata.class);
                     })
                     .put(CheckpointEntry.CheckpointEntryType.class,
                             x -> CheckpointEntry.CheckpointEntryType.typeMap.get(x.readByte()))

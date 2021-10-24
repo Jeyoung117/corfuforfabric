@@ -139,9 +139,9 @@ public class StreamsView extends AbstractView {
                        @Nonnull CacheOption cacheOption, @Nonnull UUID... streamIDs) {
 
         final boolean serializeMetadata = false;
-        byte[] txMetadata = TransactionalContext.getCurrentContext().getTxMetadata();
-//        final LogData ld = new LogData(DataType.DATA, txMetadata, object, runtime.getParameters().getCodecType());
-        final LogData ld = new LogData(DataType.DATA, object, runtime.getParameters().getCodecType());
+        Object txMetadata = TransactionalContext.getCurrentContext().getTxMetadata();
+        final LogData ld = new LogData(DataType.DATA, txMetadata, object, runtime.getParameters().getCodecType());
+//        final LogData ld = new LogData(DataType.DATA, object, runtime.getParameters().getCodecType());
         TokenResponse tokenResponse = null;
 
         // Opening serialization handle before acquiring token, this way we prevent the

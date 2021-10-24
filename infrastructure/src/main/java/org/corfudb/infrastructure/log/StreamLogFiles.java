@@ -29,10 +29,7 @@ import org.corfudb.infrastructure.log.LogFormat.LogEntry;
 import org.corfudb.infrastructure.log.LogFormat.LogHeader;
 import org.corfudb.infrastructure.log.LogFormat.Metadata;
 import org.corfudb.protocols.logprotocol.CheckpointEntry;
-import org.corfudb.protocols.wireprotocol.ILogData;
-import org.corfudb.protocols.wireprotocol.LogData;
-import org.corfudb.protocols.wireprotocol.StreamsAddressResponse;
-import org.corfudb.protocols.wireprotocol.TailsResponse;
+import org.corfudb.protocols.wireprotocol.*;
 import org.corfudb.runtime.exceptions.DataCorruptionException;
 import org.corfudb.runtime.exceptions.LogUnitException;
 import org.corfudb.runtime.exceptions.OverwriteCause;
@@ -501,6 +498,7 @@ public class StreamLogFiles implements StreamLog {
         ByteBuffer entryData = ByteBuffer.wrap(entry.getData().toByteArray());
 
         int ldCodecType = entry.hasCodecType() ? entry.getCodecType() : Codec.Type.NONE.getId();
+        TxMetadata txMetadata =   new TxMetadata(entry.getTxMetadata().toByteArray());
 
         LogData logData = new LogData(org.corfudb.protocols.wireprotocol
                 .DataType.typeMap.get((byte) entry.getDataType().getNumber()),
@@ -508,6 +506,7 @@ public class StreamLogFiles implements StreamLog {
 
         logData.setBackpointerMap(getUUIDLongMap(entry.getBackpointersMap()));
         logData.setGlobalAddress(entry.getGlobalAddress());
+        logData.setTxMetadata(txMetadata);
         log.info("infra에서의 entryData.array:" + entryData.array());
         log.info("infra에서의 txmetadata:" + entry.getTxMetadata());
 
@@ -914,6 +913,7 @@ public class StreamLogFiles implements StreamLog {
                 .setDataType(DataType.forNumber(entry.getType().ordinal()))
                 .setCodecType(entry.getPayloadCodecType().getId())
                 .setData(ByteString.copyFrom(data))
+                .setTxMetadata(ByteString.copyFrom(entry.getTxMetadata().getTxmetadata()))
                 .setGlobalAddress(address)
                 .addAllStreams(getStrUUID(entry.getStreams()))
                 .putAllBackpointers(getStrLongMap(entry.getBackpointerMap()));
