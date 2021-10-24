@@ -65,6 +65,19 @@ public interface IMetadata {
         getMetadataMap().put(LogUnitMetadataType.GLOBAL_ADDRESS, address);
     }
 
+    /**
+     * Get Log's epoch.
+     *
+     * @return epoch.
+     */
+    default byte[] getTransactionMetadata(byte[] txMetadata) {
+        return (byte[]) getMetadataMap().getOrDefault(LogUnitMetadataType.TRANSACTION_METADATA, null);
+    }
+
+    default void setTransactionMetadata(byte[] txMetadata) {
+        getMetadataMap().put(LogUnitMetadataType.TRANSACTION_METADATA, txMetadata);
+    }
+
     default void setEpoch(Long epoch) {
         getMetadataMap().put(LogUnitMetadataType.EPOCH, epoch);
     }
@@ -208,7 +221,9 @@ public interface IMetadata {
         CLIENT_ID(10, TypeToken.of(UUID.class)),
         THREAD_ID(11, TypeToken.of(Long.class)),
         EPOCH(12, TypeToken.of(Long.class)),
-        PAYLOAD_CODEC(13, TypeToken.of(Codec.Type.class));
+        PAYLOAD_CODEC(13, TypeToken.of(Codec.Type.class)),
+        TRANSACTION_METADATA(14, TypeToken.of(byte[].class));
+
         final int type;
         @Getter
         final TypeToken<?> componentType;

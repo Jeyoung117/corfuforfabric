@@ -89,6 +89,13 @@ public abstract class AbstractTransactionalContext implements
     public UUID transactionID;
 
     /**
+     * The transaction metadata of chaincode execution.
+     */
+    @Getter
+    @Setter
+    public byte[] txMetadata;
+
+    /**
      * The builder used to create this transaction.
      */
     @Getter

@@ -140,6 +140,7 @@ public class StreamsView extends AbstractView {
 
         final boolean serializeMetadata = false;
         final LogData ld = new LogData(DataType.DATA, object, runtime.getParameters().getCodecType());
+
         TokenResponse tokenResponse = null;
 
         // Opening serialization handle before acquiring token, this way we prevent the

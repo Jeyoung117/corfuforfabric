@@ -35,6 +35,7 @@ import org.corfudb.runtime.exceptions.TrimmedException;
 import org.corfudb.runtime.exceptions.WriteSizeException;
 import org.corfudb.runtime.exceptions.WrongEpochException;
 import org.corfudb.runtime.exceptions.unrecoverable.UnrecoverableCorfuError;
+import org.corfudb.runtime.object.transactions.TransactionalContext;
 import org.corfudb.util.CFUtils;
 import org.corfudb.util.Sleep;
 import org.corfudb.util.Utils;
@@ -213,6 +214,8 @@ public class AddressSpaceView extends AbstractView {
                 // Set the data to use the token
                 ld.useToken(token);
                 ld.setId(runtime.getParameters().getClientId());
+                // Set the data to store fabric transaction metadata
+                ld.setTransactionMetadata(TransactionalContext.getCurrentContext().getTxMetadata());
 
                 // Do the write
                 try {
