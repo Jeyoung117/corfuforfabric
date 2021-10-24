@@ -70,7 +70,7 @@ public interface IMetadata {
      *
      * @return epoch.
      */
-    default byte[] getTransactionMetadata(byte[] txMetadata) {
+    default byte[] getTransactionMetadata() {
         return (byte[]) getMetadataMap().getOrDefault(LogUnitMetadataType.TRANSACTION_METADATA, null);
     }
 
