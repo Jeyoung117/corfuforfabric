@@ -60,7 +60,7 @@ public abstract class AbstractTransactionalContext implements
         Comparable<AbstractTransactionalContext> {
     @Getter
     @Setter
-    TxMetadata txMetadata;
+    byte[] txMetadata;
 
     /**
      * Constant for the address of an uncommitted log entry.

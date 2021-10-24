@@ -13,9 +13,17 @@ option java_package = "org.corfudb.runtime.proto";
 //}
 
 message LogDataMsg {
+  DataType data_type = 0;
   bytes entry = 1;
 }
 
+enum DataType {
+    DATA = 0;
+    EMPTY = 1;
+    HOLE = 2,
+    TRIMMED = 3,
+    RANK_ONLY = 4;
+}
 
 message ReadResponseMsg {
   int64 address = 1;

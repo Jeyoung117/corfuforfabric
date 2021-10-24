@@ -1,5 +1,7 @@
 package org.corfudb.protocols.wireprotocol;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.corfudb.protocols.logprotocol.LogEntry;
 import org.corfudb.runtime.CorfuRuntime;
 
@@ -18,6 +20,9 @@ public interface ILogData extends IMetadata, Comparable<ILogData> {
     Object getPayload(CorfuRuntime t);
 
     DataType getType();
+
+    byte[] getTxMetadata();
+
 
     @Override
     default int compareTo(ILogData o) {

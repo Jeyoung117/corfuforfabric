@@ -35,13 +35,10 @@ public class LogData implements IMetadata, ILogData {
     final DataType type;
 
     @Getter
-    @Setter
-    TxMetadata txMetadata;
+    byte[] txMetadata;
 
     @Getter
     byte[] data;
-
-
 
     private SerializedCache serializedCache = null;
 
@@ -209,8 +206,8 @@ public class LogData implements IMetadata, ILogData {
      */
     public LogData(ByteBuf buf) {
         type = CorfuProtocolCommon.fromBuffer(buf, DataType.class);
-        txMetadata = CorfuProtocolCommon.fromBuffer(buf, TxMetadata.class);
-        String txstring = new String(txMetadata.getTxmetadata());
+        txMetadata = CorfuProtocolCommon.fromBuffer(buf, byte[].class);
+        String txstring = new String(txMetadata);
         log.info("txMetadata 값: " + txstring);
         if (type == DataType.DATA) {
             log.info("LogData init에서 if로 빠짐!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -276,14 +273,14 @@ public class LogData implements IMetadata, ILogData {
      * @param type   The type of log data to instantiate.
      * @param object The actual data/value
      */
-    public LogData(DataType type, Object txMetadata, final Object object) {
+    public LogData(DataType type, byte[] txMetadata, final Object object) {
         if (object instanceof ByteBuf) {
             this.type = type;
             this.data = byteArrayFromBuf((ByteBuf) object);
             this.metadataMap = new EnumMap<>(IMetadata.LogUnitMetadataType.class);
         } else {
             this.type = type;
-            this.txMetadata = (TxMetadata) txMetadata;
+            this.txMetadata = txMetadata;
             this.data = null;
             this.payload.set(object);
             this.metadataMap = new EnumMap<>(IMetadata.LogUnitMetadataType.class);
@@ -319,7 +316,7 @@ public class LogData implements IMetadata, ILogData {
      * @param txMetadata The metadata of fabric transaction execution
      * @param codecType The encoder/decoder type
      */
-    public LogData(DataType type, Object txMetadata, final Object object, final Codec.Type codecType) {
+    public LogData(DataType type, byte[] txMetadata, final Object object, final Codec.Type codecType) {
         this(type, txMetadata, object);
         setPayloadCodecType(codecType);
     }

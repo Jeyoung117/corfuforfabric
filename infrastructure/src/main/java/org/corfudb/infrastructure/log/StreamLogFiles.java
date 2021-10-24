@@ -506,7 +506,7 @@ public class StreamLogFiles implements StreamLog {
 
         logData.setBackpointerMap(getUUIDLongMap(entry.getBackpointersMap()));
         logData.setGlobalAddress(entry.getGlobalAddress());
-        logData.setTxMetadata(txMetadata);
+        logData.setTxMetadata(entry.getTxMetadata());
         log.info("infra에서의 entryData.array:" + entryData.array());
         log.info("infra에서의 txmetadata:" + entry.getTxMetadata());
 
@@ -913,7 +913,7 @@ public class StreamLogFiles implements StreamLog {
                 .setDataType(DataType.forNumber(entry.getType().ordinal()))
                 .setCodecType(entry.getPayloadCodecType().getId())
                 .setData(ByteString.copyFrom(data))
-                .setTxMetadata(ByteString.copyFrom(entry.getTxMetadata().getTxmetadata()))
+                .setTxMetadata(ByteString.copyFrom(entry.getTxMetadata()))
                 .setGlobalAddress(address)
                 .addAllStreams(getStrUUID(entry.getStreams()))
                 .putAllBackpointers(getStrLongMap(entry.getBackpointerMap()));
