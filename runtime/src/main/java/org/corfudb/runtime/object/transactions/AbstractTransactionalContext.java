@@ -59,6 +59,22 @@ public abstract class AbstractTransactionalContext implements
         Comparable<AbstractTransactionalContext> {
 
     /**
+     * The transaction metadata of chaincode execution. proposal
+     */
+    @Getter
+    @Setter
+    public byte[] fabricProposal;
+
+    /**
+     * The transaction metadata of chaincode execution. proposal response
+     */
+    @Getter
+    @Setter
+    public byte[] txMetadata;
+
+
+
+    /**
      * Constant for the address of an uncommitted log entry.
      */
     public static final long UNCOMMITTED_ADDRESS = -1L;
@@ -88,12 +104,6 @@ public abstract class AbstractTransactionalContext implements
     @Getter
     public UUID transactionID;
 
-    /**
-     * The transaction metadata of chaincode execution.
-     */
-    @Getter
-    @Setter
-    public byte[] txMetadata;
 
     /**
      * The builder used to create this transaction.

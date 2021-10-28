@@ -65,11 +65,7 @@ public interface IMetadata {
         getMetadataMap().put(LogUnitMetadataType.GLOBAL_ADDRESS, address);
     }
 
-    /**
-     * Get Log's epoch.
-     *
-     * @return epoch.
-     */
+
     default byte[] getTransactionMetadata() {
         return (byte[]) getMetadataMap().getOrDefault(LogUnitMetadataType.TRANSACTION_METADATA, null);
     }
@@ -78,6 +74,19 @@ public interface IMetadata {
         getMetadataMap().put(LogUnitMetadataType.TRANSACTION_METADATA, txMetadata);
     }
 
+    default byte[] getFabricProposal() {
+        return (byte[]) getMetadataMap().getOrDefault(LogUnitMetadataType.FABRIC_PROPOSAL, null);
+    }
+
+    default void setFabricProposal(byte[] fabricProposal) {
+        getMetadataMap().put(LogUnitMetadataType.FABRIC_PROPOSAL, fabricProposal);
+    }
+
+    /**
+     * Get Log's epoch.
+     *
+     * @return epoch.
+     */
     default void setEpoch(Long epoch) {
         getMetadataMap().put(LogUnitMetadataType.EPOCH, epoch);
     }
@@ -222,7 +231,9 @@ public interface IMetadata {
         THREAD_ID(11, TypeToken.of(Long.class)),
         EPOCH(12, TypeToken.of(Long.class)),
         PAYLOAD_CODEC(13, TypeToken.of(Codec.Type.class)),
-        TRANSACTION_METADATA(14, TypeToken.of(byte[].class));
+        TRANSACTION_METADATA(14, TypeToken.of(byte[].class)),
+        FABRIC_PROPOSAL(15, TypeToken.of(byte[].class));
+
 
         final int type;
         @Getter
