@@ -1,5 +1,5 @@
 #!bin/bash
-HOME_DIR=/home/hwang/project/github.com/Corfu_build/CorfuDBforFabric
+HOME_DIR=/home/hwang/project/github.com/CorfuDBs/CorfuDBforFabric
 
 rm -rf $HOME_DIR/tmp/data1
 mkdir $HOME_DIR/tmp/data1
