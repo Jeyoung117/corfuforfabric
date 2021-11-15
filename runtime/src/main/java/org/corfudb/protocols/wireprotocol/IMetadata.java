@@ -66,20 +66,12 @@ public interface IMetadata {
     }
 
 
-    default byte[] getTransactionMetadata() {
-        return (byte[]) getMetadataMap().getOrDefault(LogUnitMetadataType.TRANSACTION_METADATA, null);
+    default byte[] getTransactionEnvelope() {
+        return (byte[]) getMetadataMap().getOrDefault(LogUnitMetadataType.TRANSACTION_ENVELOPE, null);
     }
 
-    default void setTransactionMetadata(byte[] txMetadata) {
-        getMetadataMap().put(LogUnitMetadataType.TRANSACTION_METADATA, txMetadata);
-    }
-
-    default byte[] getFabricProposal() {
-        return (byte[]) getMetadataMap().getOrDefault(LogUnitMetadataType.FABRIC_PROPOSAL, null);
-    }
-
-    default void setFabricProposal(byte[] fabricProposal) {
-        getMetadataMap().put(LogUnitMetadataType.FABRIC_PROPOSAL, fabricProposal);
+    default void setTransactionEnvelope(byte[] txMetadata) {
+        getMetadataMap().put(LogUnitMetadataType.TRANSACTION_ENVELOPE, txMetadata);
     }
 
     /**
@@ -231,8 +223,7 @@ public interface IMetadata {
         THREAD_ID(11, TypeToken.of(Long.class)),
         EPOCH(12, TypeToken.of(Long.class)),
         PAYLOAD_CODEC(13, TypeToken.of(Codec.Type.class)),
-        TRANSACTION_METADATA(14, TypeToken.of(byte[].class)),
-        FABRIC_PROPOSAL(15, TypeToken.of(byte[].class));
+        TRANSACTION_ENVELOPE(14, TypeToken.of(byte[].class));
 
 
         final int type;

@@ -215,9 +215,7 @@ public class AddressSpaceView extends AbstractView {
                 ld.useToken(token);
                 ld.setId(runtime.getParameters().getClientId());
                 // Set the data to store fabric transaction metadata
-                ld.setTransactionMetadata(TransactionalContext.getCurrentContext().getTxMetadata());
-                // Set the data to stroe fabric proposal
-                ld.setFabricProposal(TransactionalContext.getCurrentContext().getFabricProposal());
+                ld.setTransactionEnvelope(TransactionalContext.getCurrentContext().getTxMetadata());
 
                 // Do the write
                 try {
