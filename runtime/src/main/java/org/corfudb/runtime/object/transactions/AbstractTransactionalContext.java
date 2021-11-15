@@ -59,20 +59,11 @@ public abstract class AbstractTransactionalContext implements
         Comparable<AbstractTransactionalContext> {
 
     /**
-     * The transaction metadata of chaincode execution. proposal
-     */
-    @Getter
-    @Setter
-    public byte[] fabricProposal;
-
-    /**
      * The transaction metadata of chaincode execution. proposal response
      */
     @Getter
     @Setter
-    public byte[] txMetadata;
-
-
+    public byte[] txEnvelope;
 
     /**
      * Constant for the address of an uncommitted log entry.
