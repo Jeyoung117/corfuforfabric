@@ -19,7 +19,7 @@ public class LogReplicationConfig {
     public static final int DEFAULT_TIMEOUT_MS = 5000;
 
     // Log Replication default max number of messages generated at the active cluster for each batch.
-    public static final int DEFAULT_MAX_NUM_MSG_PER_BATCH = 10;
+    public static final int DEFAULT_MAX_NUM_MSG_PER_BATCH = 1000;
 
     // Log Replication default max data message size is 64MB.
     public static final int MAX_DATA_MSG_SIZE_SUPPORTED = (64 << 20);

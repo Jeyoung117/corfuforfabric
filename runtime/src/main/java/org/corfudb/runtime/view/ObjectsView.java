@@ -155,7 +155,8 @@ public class ObjectsView extends AbstractView {
         } catch (TransactionAbortedException e) {
             log.warn("TXEnd[{}] Aborted Exception {}", context, e);
             TransactionalContext.getCurrentContext().abortTransaction(e);
-            throw e;
+            return -3L;
+//            throw e;
         } catch (NetworkException | WriteSizeException | QuotaExceededException e) {
 
             Token snapshotTimestamp;
